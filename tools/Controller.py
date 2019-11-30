@@ -2,22 +2,32 @@ from pynput.keyboard import Key, Listener, KeyCode
 import cv2
 import time
 import threading
+from tools import TelloEdu
 
 
 class Controller(object):
-    def __init__(self, drone, callback=None):
+    def __init__(self, drone=None, video_callback=None, keyboard_callback=None):
         self.drone = drone
-        self.callback = callback
+        if self.drone is None:
+            self.drone = TelloEdu()
+        self.camera = None
+        self.video_callback = video_callback
+        self.keyboard_callback = keyboard_callback
         self.key_list = []
         self.frame = None
         self.speed = 30
 
     def on_press(self, key):
+        if self.keyboard_callback is not None:
+            self.keyboard_callback("on_press", key)
         if key not in self.key_list:
             self.key_list.append(key)
             self.do_action()
 
     def on_release(self, key):
+        if self.keyboard_callback is not None:
+            self.keyboard_callback("on_release", key)
+
         if Key.esc in self.key_list:
             Listener.stop()
 
@@ -47,28 +57,29 @@ class Controller(object):
         if KeyCode.from_char('p') in self.key_list:
             self.drone.send_command("moff")
 
-        if KeyCode.from_char('1') in self.key_list:
-            self.key_list.remove(KeyCode.from_char('1'))
-            self.drone.do_find_card(1)
-            return
-
-        if KeyCode.from_char('2') in self.key_list:
-            self.key_list.remove(KeyCode.from_char('2'))
-            self.drone.do_find_card(2)
-            return
-
         if key in self.key_list:
             self.key_list.remove(key)
             self.do_action()
 
+    def get_frame(self):
+        if self.drone.is_ready:
+            return self.drone.frame
+        if self.camera is None:
+            self.camera = cv2.VideoCapture(0)
+        success, frame = self.camera.read()
+        if success:
+            return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        return None
+
     def on_tello_video_capture(self):
         while True:
-            if self.drone.frame is None:
+            frame = self.get_frame()
+            if frame is None:
                 continue
-            self.frame = self.drone.frame
+            self.frame = frame
 
-            if self.callback is not None:
-                self.callback(self.frame)
+            if self.video_callback is not None:
+                self.video_callback(self.frame)
 
             self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
             cv2.imshow("frame", self.frame)
@@ -102,13 +113,11 @@ class Controller(object):
 
         self.drone.do_rc(a, b, c, d)
 
-    def run(self):
-        if self.drone.is_ready:
-            video_thread = threading.Thread(target=self.on_tello_video_capture)
-            video_thread.daemon = True
-            video_thread.start()
+    def run_video(self):
+        video_thread = threading.Thread(target=self.on_tello_video_capture)
+        video_thread.daemon = True
+        video_thread.start()
 
-            with Listener(on_press=self.on_press, on_release=self.on_release) as listener:
-                listener.join()
-        else:
-            print("Drone is not ready yet.")
+    def run_keyboard(self):
+        with Listener(on_press=self.on_press, on_release=self.on_release) as listener:
+            listener.join()

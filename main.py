@@ -1,10 +1,14 @@
 from tools import *
 
 
-def callback(frame):
+def v_callback(frame):
     print(frame.shape)
 
 
-drone = TelloEdu()
-controller = Controller(drone, callback)
-controller.run()
+def k_callback(event_name, key):
+    print(event_name, key)
+
+
+c = Controller(video_callback=v_callback, keyboard_callback=k_callback)
+c.run_video()
+c.run_keyboard()
