@@ -96,23 +96,59 @@ class TelloEdu:
     def do_command(self, wait=False):
         self.send_command("command", wait)
 
-    def do_stream_on(self, wait=False):
-        self.send_command("streamon", wait)
-
-    def do_stream_off(self):
-        self.send_command("streamoff")
-
-    def get_battery(self, wait=False):
-        self.send_command("battery?", wait)
-
     def do_takeoff(self):
         self.send_command("takeoff")
 
     def do_land(self):
         self.send_command("land")
 
-    def do_stop(self):
+    def do_stream_on(self, wait=False):
+        self.send_command("streamon", wait)
+
+    def do_stream_off(self):
+        self.send_command("streamoff")
+
+    def do_emergency(self):
+        self.send_command("emergency")
+
+    def do_up(self, x):  # Ascend to "x"cm. (20 ~ 500)
+        self.send_command("up %d" % x, wait=True)
+
+    def do_down(self, x):  # Descend to "x"cm. (20 ~ 500)
+        self.send_command("down %d" % x, wait=True)
+
+    def do_left(self, x):  # Fly left for "x"cm. (20 ~ 500)
+        self.send_command("left %d" % x, wait=True)
+
+    def do_right(self, x):  # Fly right for "x"cm. (20 ~ 500)
+        self.send_command("right %d" % x, wait=True)
+
+    def do_forward(self, x):  # Fly forward for "x"cm. (20 ~ 500)
+        self.send_command("forward %d" % x, wait=True)
+
+    def do_back(self, x):  # Fly backward for "x"cm. (20 ~ 500)
+        self.send_command("back %d" % x, wait=True)
+
+    def do_cw(self, x):  # Rotate "x" degrees clockwise. (1 ~ 360)
+        self.send_command("cw %d" % x, wait=True)
+
+    def do_ccw(self, x):  # Rotate "x" degrees counterclockwise. (1 ~ 360)
+        self.send_command("ccw %d" % x, wait=True)
+
+    def do_flip(self, direction):  # Flip in ["l", "r", "f", "b"]  direction.
+        self.send_command("flip " + direction, wait=True)
+
+    def do_go(self, x, y, z, speed):  # Fly to point at speed cm/s. (-500 ~ 500)
+        self.send_command("go %d %d %d %d" % (x, y, z, speed), wait=True)
+
+    def do_stop(self):  # Hovers in the air.
         self.send_command("stop")
+
+    def do_curve(self, x1, y1, z1, x2, y2, z2, speed):  # Arc radius is not within a range of 0.5 ~ 10 meters.
+        self.send_command("curve %d %d %d %d %d %d %d" % (x1, y1, z1, x2, y2, z2, speed), wait=True)
+
+    def get_battery(self, wait=False):
+        self.send_command("battery?", wait)
 
     def do_rc(self, a, b, c, d):
         self.send_command("rc %d %d %d %d" % (a, b, c, d))

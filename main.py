@@ -1,3 +1,10 @@
-import tools
+from tools import *
 
-print(tools.TelloEdu())
+
+def callback(frame):
+    print(frame.shape)
+
+
+drone = TelloEdu()
+controller = Controller(drone, callback)
+controller.run()
