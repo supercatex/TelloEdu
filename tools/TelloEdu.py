@@ -96,11 +96,11 @@ class TelloEdu:
     def do_command(self, wait=False):
         self.send_command("command", wait)
 
-    def do_takeoff(self):
-        self.send_command("takeoff")
+    def do_takeoff(self, wait=False):
+        self.send_command("takeoff", wait)
 
-    def do_land(self):
-        self.send_command("land")
+    def do_land(self, wait=False):
+        self.send_command("land", wait)
 
     def do_stream_on(self, wait=False):
         self.send_command("streamon", wait)
