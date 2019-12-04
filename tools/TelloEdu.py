@@ -98,6 +98,7 @@ class TelloEdu:
 
     def do_takeoff(self, wait=False):
         self.send_command("takeoff", wait)
+        time.sleep(8)
 
     def do_land(self, wait=False):
         self.send_command("land", wait)
