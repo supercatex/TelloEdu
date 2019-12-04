@@ -68,7 +68,8 @@ class TelloEdu:
                         self.frame = frame
                     packet_data = ""
             except Exception as e:
-                print(e)
+                # print(e)
+                pass
 
     def _h264_decode(self, packet_data):
         res_frame_list = []
@@ -82,7 +83,7 @@ class TelloEdu:
                 res_frame_list.append(frame)
         return res_frame_list
 
-    def send_command(self, cmd, wait=False):
+    def send_command(self, cmd, wait=False, timeout=0):
         self.response = None
         self.cmd_socket.sendto(cmd.encode("UTF-8"), self.tello_address)
         print("Command '%s' sent. %f" % (cmd, time.time()))
@@ -90,15 +91,16 @@ class TelloEdu:
             self.locked = True
             print("Waiting command '%s' response..." % cmd)
             start_time = time.time()
-            while self.locked and time.time() - start_time < 3:
+            while self.locked:
+                if time.time() - start_time > timeout > 0:
+                    break
                 time.sleep(0.1)
 
     def do_command(self, wait=False):
         self.send_command("command", wait)
 
-    def do_takeoff(self, wait=False):
-        self.send_command("takeoff", wait)
-        time.sleep(8)
+    def do_takeoff(self):
+        self.send_command("takeoff", wait=True)
 
     def do_land(self, wait=False):
         self.send_command("land", wait)
@@ -178,65 +180,65 @@ class TelloEdu:
     def do_ap(self, ssid, pswd):  # Change to station mode and connect to a new access point.
         self.send_command("ap %s %s" % (ssid, pswd))
 
-    def get_speed(self, wait=False):
-        self.send_command("speed?", wait)
+    def get_speed(self, wait=False, timeout=3):
+        self.send_command("speed?", wait, timeout)
 
-    def get_battery(self, wait=False):
-        self.send_command("battery?", wait)
+    def get_battery(self, wait=False, timeout=3):
+        self.send_command("battery?", wait, timeout)
 
-    def get_time(self, wait=False):
-        self.send_command("time?", wait)
+    def get_time(self, wait=False, timeout=3):
+        self.send_command("time?", wait, timeout)
 
-    def get_wifi(self, wait=False):
-        self.send_command("wifi?", wait)
+    def get_wifi(self, wait=False, timeout=3):
+        self.send_command("wifi?", wait, timeout)
 
-    def get_sdk(self, wait=False):
-        self.send_command("sdk?", wait)
+    def get_sdk(self, wait=False, timeout=3):
+        self.send_command("sdk?", wait, timeout)
 
-    def get_sn(self, wait=False):
-        self.send_command("sn?", wait)
+    def get_sn(self, wait=False, timeout=3):
+        self.send_command("sn?", wait, timeout)
 
-    def get_pitch(self, wait=False):
-        self.send_command("pitch?", wait)
+    def get_pitch(self, wait=False, timeout=3):
+        self.send_command("pitch?", wait, timeout)
 
-    def get_roll(self, wait=False):
-        self.send_command("roll?", wait)
+    def get_roll(self, wait=False, timeout=3):
+        self.send_command("roll?", wait, timeout)
 
-    def get_yaw(self, wait=False):
-        self.send_command("yaw?", wait)
+    def get_yaw(self, wait=False, timeout=3):
+        self.send_command("yaw?", wait, timeout)
 
-    def get_vgx(self, wait=False):  # The speed of "x" axis.
-        self.send_command("vgx?", wait)
+    def get_vgx(self, wait=False, timeout=3):  # The speed of "x" axis.
+        self.send_command("vgx?", wait, timeout)
 
-    def get_vgy(self, wait=False):  # The speed of "y" axis.
-        self.send_command("vgy?", wait)
+    def get_vgy(self, wait=False, timeout=3):  # The speed of "y" axis.
+        self.send_command("vgy?", wait, timeout)
 
-    def get_vgz(self, wait=False):  # The speed of "z" axis.
-        self.send_command("vgz?", wait)
+    def get_vgz(self, wait=False, timeout=3):  # The speed of "z" axis.
+        self.send_command("vgz?", wait, timeout)
 
-    def get_templ(self, wait=False):  # The lowest temperature in degree Celsius.
-        self.send_command("templ?", wait)
+    def get_templ(self, wait=False, timeout=3):  # The lowest temperature in degree Celsius.
+        self.send_command("templ?", wait, timeout)
 
-    def get_temph(self, wait=False):  # The highest temperature in degree Celsius.
-        self.send_command("temph?", wait)
+    def get_temph(self, wait=False, timeout=3):  # The highest temperature in degree Celsius.
+        self.send_command("temph?", wait, timeout)
 
-    def get_tof(self, wait=False):  # The time of flight distance in cm.
-        self.send_command("tof?", wait)
+    def get_tof(self, wait=False, timeout=3):  # The time of flight distance in cm.
+        self.send_command("tof?", wait, timeout)
 
-    def get_h(self, wait=False):  # The height in cm.
-        self.send_command("h?", wait)
+    def get_h(self, wait=False, timeout=3):  # The height in cm.
+        self.send_command("h?", wait, timeout)
 
-    def get_bat(self, wait=False):
-        self.send_command("bat?", wait)
+    def get_bat(self, wait=False, timeout=3):
+        self.send_command("bat?", wait, timeout)
 
-    def get_baro(self, wait=False):  # The barometer measurement in cm.
-        self.send_command("baro?", wait)
+    def get_baro(self, wait=False, timeout=3):  # The barometer measurement in cm.
+        self.send_command("baro?", wait, timeout)
 
-    def get_agx(self, wait=False):  # The acceleration of the "x" axis.
-        self.send_command("agx?", wait)
+    def get_agx(self, wait=False, timeout=3):  # The acceleration of the "x" axis.
+        self.send_command("agx?", wait, timeout)
 
-    def get_agy(self, wait=False):  # The acceleration of the "y" axis.
-        self.send_command("agy?", wait)
+    def get_agy(self, wait=False, timeout=3):  # The acceleration of the "y" axis.
+        self.send_command("agy?", wait, timeout)
 
-    def get_agz(self, wait=False):  # The acceleration of the "z" axis.
-        self.send_command("agz?", wait)
+    def get_agz(self, wait=False, timeout=3):  # The acceleration of the "z" axis.
+        self.send_command("agz?", wait, timeout)
