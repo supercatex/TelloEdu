@@ -8,3 +8,19 @@
 5. Install packages: `numpy, opencv-python, pynput`.
 
 ![image](https://github.com/supercatex/TelloEdu/raw/master/images/telloedu.jpg)
+
+### Keyboard control
+* Esc = Quit & Emergency stop
+* t = Takeoff
+* g = land
+* w = Forward
+* s = Backward
+* q = Move Left
+* e = Move Right
+* a = Turn Left
+* d = Turn Right
+* u = Up
+* j = Down
+* Space = Hovers in the air
+* Arrow Up = Speed Up
+* Arrow Down = Speed Down
