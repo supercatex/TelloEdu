@@ -6,3 +6,5 @@
 3. Download and install Git from [https://git-scm.com/]()
 4. Unzip `"tello_video_dll_for_win64.zip"` to `"C:\Python27\Lib\site-packages"`
 5. Install packages: `numpy, opencv-python, pynput`.
+
+![image](https://github.com/supercatex/TelloEdu/blob/master/images/telloedu.jpg)
