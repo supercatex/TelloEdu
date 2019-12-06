@@ -121,3 +121,4 @@ class Controller(object):
     def run_keyboard(self):
         with Listener(on_press=self.on_press, on_release=self.on_release) as listener:
             listener.join()
+        self.drone.do_emergency()
