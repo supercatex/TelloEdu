@@ -12,7 +12,7 @@
 ### Keyboard control
 * Esc = Quit & Emergency stop
 * t = Takeoff
-* g = land
+* g = Land
 * w = Forward
 * s = Backward
 * q = Move Left
