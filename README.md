@@ -1,7 +1,7 @@
 # TelloEdu
-* Supported Tello SDK 2.0 User Guide. [[URL]](https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20SDK%202.0%20User%20Guide.pdf)
-* Supported video stream.
-* Supported Keyboard events.
+* Support Tello SDK 2.0 User Guide. [[URL]](https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20SDK%202.0%20User%20Guide.pdf)
+* Support video stream.
+* Support Keyboard events.
 
 ### Setup Guide
 1. Download and install Python2.7 from [https://www.python.org/]()
